@@ -28,11 +28,8 @@ func TestResultRoman1To100(t *testing.T) {
 	}
 	sort.Ints(keys)
 
-	var countModeTen int
-	var countTen string
-	var romanNumeral string
 	for _, k := range keys {
-		countModeTen, countTen, romanNumeral = roman.ConvertToRomanNumeral(k, countModeTen, countTen)
+		romanNumeral := roman.ConvertToRomanNumeral(k)
 		if romanNumeral != mapRoman[k] {
 			t.Errorf("expect number [%d = %s], but it got [%d = %s]", k, mapRoman[k], k, romanNumeral)
 		}
