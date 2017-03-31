@@ -2,29 +2,35 @@ package roman
 
 import "fmt"
 
-var romanMap = map[int]string{1: "I", 5: "V", 10: "X", 50: "L", 100: "C"}
+func romanDefault() func(int) string {
+	var romanMap = map[int]string{1: "I", 5: "V", 10: "X", 50: "L", 100: "C"}
+
+	return func(key int) string {
+		return romanMap[key]
+	}
+}
 
 func decode(num int) string {
 	var result string
 	switch {
 	case num/10 == 9 || num/10 == 4:
-		result += romanMap[10] + romanMap[num+10]
+		result += romanDefault()(10) + romanDefault()(num+10)
 	case num < 4:
 		result += concat1to2(num%5, 0)
 	case num == 4 || num == 9 || num == 14:
-		result += romanMap[1] + romanMap[num+1]
+		result += romanDefault()(1) + romanDefault()(num+1)
 	case num < 9:
 		result += concat1to2(num%5, 5)
 	default:
-		result += romanMap[0] + romanMap[num+0]
+		result += romanDefault()(0) + romanDefault()(num+0)
 	}
 	return result
 }
 
 func concat1to2(num int, prefix int) string {
-	var result = romanMap[prefix]
+	var result = romanDefault()(prefix)
 	for i := 1; i <= num; i++ {
-		result += romanMap[1]
+		result += romanDefault()(1)
 	}
 	return result
 }
@@ -40,7 +46,7 @@ func ConvertToRomanNumeral(i int) string {
 				countModeTen = 0
 			}
 			if ii != 50 && ii != 40 && ii != 100 {
-				countTen += romanMap[10]
+				countTen += romanDefault()(10)
 			} else {
 				countTen = ""
 			}
